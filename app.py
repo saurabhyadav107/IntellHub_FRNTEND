@@ -10,7 +10,7 @@ import base64
 # Page configuration
 # ============================
 st.set_page_config(
-    page_title="CII Intelligence Portal",
+    page_title="Intellhub",
     page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded",
