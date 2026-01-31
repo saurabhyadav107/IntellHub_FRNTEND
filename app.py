@@ -3,6 +3,7 @@ import requests
 import json
 import re
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import time
 import base64
 
@@ -15,6 +16,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+def ist_time():
+    return datetime.now(ZoneInfo("Asia/Kolkata")).strftime("%H:%M")
 
 # ============================
 # Advanced Custom CSS (Static Dark Mode Implementation)
@@ -338,6 +342,7 @@ with st.sidebar:
 # ============================
 if tabs == "Intelligence Chat":
     # Hero Section (shown when no messages)
+    
     if not st.session_state.messages:
         st.markdown(
             """
@@ -379,7 +384,7 @@ if tabs == "Intelligence Chat":
                         {
                             "role": "user",
                             "content": text,
-                            "time": datetime.now().strftime("%H:%M"),
+                            "time": ist_time(),
                         }
                     )
                     with st.spinner("Connecting to Knowledge Base..."):
@@ -393,7 +398,7 @@ if tabs == "Intelligence Chat":
                             {
                                 "role": "assistant",
                                 "content": bot_text,
-                                "time": datetime.now().strftime("%H:%M"),
+                                "time": ist_time(),
                             }
                         )
                     st.rerun()
@@ -418,7 +423,7 @@ if tabs == "Intelligence Chat":
     query = st.chat_input("Enter your industry research query...")
     if query:
         st.session_state.messages.append(
-            {"role": "user", "content": query, "time": datetime.now().strftime("%H:%M")}
+            {"role": "user", "content": query, "time": ist_time()}
         )
         st.rerun()
 
@@ -438,7 +443,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             {
                 "role": "assistant",
                 "content": bot_text,
-                "time": datetime.now().strftime("%H:%M"),
+                "time": ist_time(),
             }
         )
     st.rerun()
