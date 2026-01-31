@@ -24,7 +24,9 @@ st.markdown(
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
-    /* Global Variables for Static Dark Theme */
+    /* ====================================
+       GLOBAL VARIABLES & ROOT SETUP
+       ==================================== */
     :root {
         --primary-color: #10A37F;
         --bg-dark: #090B0F;
@@ -32,16 +34,33 @@ st.markdown(
         --glass-border: rgba(255, 255, 255, 0.1);
         --text-main: #E0E0E0;
         --text-muted: #A0A0A0;
+        --input-bg: #1E2028;
     }
 
-    /* Force background and font for the entire app */
+    /* ====================================
+       FORCE DARK BACKGROUND EVERYWHERE
+       ==================================== */
+    html, body {
+        background-color: #090B0F !important;
+    }
+
     .stApp {
         background: radial-gradient(circle at 50% 0%, #1a1c24 0%, #090b0f 100%) !important;
         color: var(--text-main) !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* Force Sidebar Dark Theme */
+    .stAppViewContainer {
+        background: #090B0F !important;
+    }
+
+    section[data-testid="stMain"] {
+        background: transparent !important;
+    }
+
+    /* ====================================
+       SIDEBAR STYLING
+       ==================================== */
     [data-testid="stSidebar"] {
         background-color: #0d0f14 !important;
         border-right: 1px solid var(--glass-border) !important;
@@ -51,25 +70,88 @@ st.markdown(
         color: var(--text-main) !important;
     }
 
-    /* Target all headers and markdown text to be light */
+    /* ====================================
+       TEXT ELEMENTS
+       ==================================== */
     h1, h2, h3, p, span, label, .stMarkdown {
         color: var(--text-main) !important;
     }
 
-    /* Style the Chat Input Area */
-    .stChatInputContainer {
-        padding-bottom: 2rem !important;
-        background-color: transparent !important;
-    }
+    /* ====================================
+       COMPLETE BOTTOM INPUT AREA FIX
+       ==================================== */
     
-    .stChatInputContainer textarea {
-        background-color: #1E2028 !important;
-        color: white !important;
-        border: 1px solid var(--glass-border) !important;
-        border-radius: 12px !important;
+    /* Target the outermost bottom container */
+    [data-testid="stBottom"] {
+        background-color: #090B0F !important;
     }
 
-    /* Message Containers */
+    /* The chat input parent wrapper */
+    [data-testid="stChatInputContainer"] {
+        background-color: #090B0F !important;
+        border: none !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* All child divs inside the container */
+    [data-testid="stChatInputContainer"] > div,
+    [data-testid="stChatInputContainer"] > div > div,
+    [data-testid="stChatInputContainer"] > div > div > div {
+        background-color: #090B0F !important;
+    }
+
+    /* The actual input box */
+    [data-testid="stChatInput"] {
+        background-color: #1E2028 !important;
+        border: 1px solid var(--glass-border) !important;
+        border-radius: 14px !important;
+    }
+
+    /* The textarea inside */
+    [data-testid="stChatInput"] textarea {
+        background-color: #1E2028 !important;
+        color: var(--text-main) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+
+    /* Placeholder text */
+    [data-testid="stChatInput"] textarea::placeholder {
+        color: #8b90a0 !important;
+    }
+
+    /* Send button */
+    [data-testid="stChatInput"] button {
+        background-color: var(--primary-color) !important;
+        color: white !important;
+        border-radius: 8px !important;
+    }
+
+    /* Force the bottom block container */
+    [data-testid="stBottomBlockContainer"],
+    [data-testid="stBottomBlockContainer"] > div {
+        background-color: #090B0F !important;
+    }
+
+    /* Target BaseWeb layer specifically */
+    div[data-baseweb="base-input"] {
+        background-color: #1E2028 !important;
+    }
+
+    /* ====================================
+       EMOTION CACHE OVERRIDE
+       ==================================== */
+    div[class^="st-emotion-cache"],
+    div[class*=" st-emotion-cache"] {
+        background-color: transparent !important;
+    }
+
+    /* ====================================
+       CHAT MESSAGE BUBBLES
+       ==================================== */
+    [data-testid="stChatMessageContainer"] {
+        background-color: transparent !important;
+    }
+
     .chat-bubble {
         padding: 1.5rem;
         border-radius: 1.2rem;
@@ -111,7 +193,9 @@ st.markdown(
         color: var(--text-muted);
     }
 
-    /* Hero Section */
+    /* ====================================
+       HERO SECTION
+       ==================================== */
     .hero-box {
         text-align: center;
         padding: 4rem 2rem;
@@ -130,13 +214,16 @@ st.markdown(
         margin-bottom: 1rem;
     }
 
-    /* Override Streamlit Buttons to be static dark */
+    /* ====================================
+       BUTTON STYLING
+       ==================================== */
     div.stButton > button {
         background-color: rgba(255, 255, 255, 0.05) !important;
         color: white !important;
         border: 1px solid var(--glass-border) !important;
         border-radius: 12px !important;
         transition: all 0.3s ease !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     div.stButton > button:hover {
@@ -145,27 +232,45 @@ st.markdown(
         transform: translateY(-2px);
     }
 
-    /* Fix slider colors */
+    /* ====================================
+       SLIDER STYLING
+       ==================================== */
     .stSlider [data-baseweb="slider"] {
         background-color: transparent !important;
     }
-    
-    /* Hide top header to keep clean look */
+
+    /* ====================================
+       AGGRESSIVE NUCLEAR FIX (LAST RESORT)
+       ==================================== */
+    [data-testid="stChatInputContainer"] * {
+        background-color: #090B0F !important;
+    }
+
+    [data-testid="stChatInput"],
+    [data-testid="stChatInput"] *:not(button) {
+        background-color: #1E2028 !important;
+    }
+
+    /* ====================================
+       HIDE STREAMLIT BRANDING
+       ==================================== */
     header {visibility: hidden;}
     footer {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
 </style>
 """,
     unsafe_allow_html=True,
 )
 
 # ============================
-# API & Logic
+# API Configuration
 # ============================
 API_URL = "https://stagingchatbotapi.mycii.in/search"
 API_KEY = ""
 
 
 def extract_response_text(api_data) -> str:
+    """Extract clean response text from API data."""
     if isinstance(api_data, dict):
         return api_data.get("results", json.dumps(api_data, indent=2))
     if not isinstance(api_data, str):
@@ -182,6 +287,7 @@ def extract_response_text(api_data) -> str:
 
 
 def call_chatbot_api(query: str, top_k: int):
+    """Call the CII chatbot API with error handling."""
     payload = {"query": query, "top_k": top_k}
     try:
         response = requests.post(
@@ -197,16 +303,15 @@ def call_chatbot_api(query: str, top_k: int):
 
 
 # ============================
-# Session State
+# Session State Initialization
 # ============================
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # ============================
-# Sidebar
+# Sidebar Configuration
 # ============================
 with st.sidebar:
-    # Centering image with markdown
     st.markdown(
         '<div style="text-align: center; margin-bottom: 20px;">', unsafe_allow_html=True
     )
@@ -231,88 +336,95 @@ with st.sidebar:
 # ============================
 # Main Content Logic
 # ============================
+if tabs == "Intelligence Chat":
+    # Hero Section (shown when no messages)
+    if not st.session_state.messages:
+        st.markdown(
+            """
+        <div class="hero-box">
+            <div class="hero-title">CII Intelligence Portal</div>
+            <p style="font-size: 1.2rem; opacity: 0.8; color: white !important;">The definitive AI interface for Confederation of Indian Industry knowledge and economic insights.</p>
+        </div>
+        """,
+            unsafe_allow_html=True,
+        )
 
-if not st.session_state.messages:
-    st.markdown(
-        """
-    <div class="hero-box">
-        <div class="hero-title">CII Intelligence Portal</div>
-        <p style="font-size: 1.2rem; opacity: 0.8; color: white !important;">The definitive AI interface for Confederation of Indian Industry knowledge and economic insights.</p>
-    </div>
-    """,
-        unsafe_allow_html=True,
-    )
+        st.markdown("### Start with a suggested query:")
+        col1, col2 = st.columns(2)
+        examples = [
+            (
+                "📈 Growth Trends",
+                "Expected change in Madhya Pradesh’s GSDP share by 2047–48?",
+            ),
+            (
+                "🌱 Sustainability",
+                "Tell me about CII's Green Co rating system and ESG initiatives.",
+            ),
+            (
+                "🏛️ Policy Insights",
+                "What are the key highlights of CII's pre-budget memorandum?",
+            ),
+            (
+                "🔧 MSME Support",
+                "How is CII helping MSMEs with digital transformation?",
+            ),
+        ]
 
-    st.markdown("### Get Started with Example Queries")
-    col1, col2 = st.columns(2)
-    examples = [
-        (
-            "📈 Growth Trends",
-            "What are the projected nominal GSDP values of Madhya Pradesh for 2030-31 and 2047-48?",
-        ),
-        (
-            "🌱 Sustainability",
-            "Tell me about CII's Green Co rating system and ESG initiatives.",
-        ),
-        (
-            "🏛️ Policy Insights",
-            "What are the key highlights of CII's pre-budget memorandum?",
-        ),
-        ("🔧 MSME Support", "How is CII helping MSMEs with digital transformation?"),
-    ]
-
-    for i, (label, text) in enumerate(examples):
-        with col1 if i % 2 == 0 else col2:
-            if st.button(
-                f"**{label}**\n\n{text}", key=f"ex_{i}", use_container_width=True
-            ):
-                st.session_state.messages.append(
-                    {
-                        "role": "user",
-                        "content": text,
-                        "time": datetime.now().strftime("%H:%M"),
-                    }
-                )
-                with st.spinner("Connecting to Knowledge Base..."):
-                    res = call_chatbot_api(text, top_k)
-                    bot_text = (
-                        extract_response_text(res["data"])
-                        if res["success"]
-                        else f"Error: {res['error']}"
-                    )
+        for i, (label, text) in enumerate(examples):
+            with col1 if i % 2 == 0 else col2:
+                if st.button(
+                    f"**{label}**\n\n{text}", key=f"ex_{i}", use_container_width=True
+                ):
                     st.session_state.messages.append(
                         {
-                            "role": "assistant",
-                            "content": bot_text,
+                            "role": "user",
+                            "content": text,
                             "time": datetime.now().strftime("%H:%M"),
                         }
                     )
-                st.rerun()
-# Chat Feed
-for msg in st.session_state.messages:
-    is_user = msg["role"] == "user"
-    st.markdown(
-        f"""
-    <div class="chat-bubble {'user-bubble' if is_user else 'assistant-bubble'}">
-        <div class="sender-meta">
-            <span>{'USER' if is_user else 'CII INTELLIGENCE'}</span>
-            <span>{msg['time']}</span>
-        </div>
-        <div style="color: white !important;">{msg['content']}</div>
-    </div>
-    """,
-        unsafe_allow_html=True,
-    )
-# Input
-query = st.chat_input("Enter your industry research query...")
-if query:
-    st.session_state.messages.append(
-        {"role": "user", "content": query, "time": datetime.now().strftime("%H:%M")}
-    )
-    # We rerun to show the user's message immediately before waiting for the API
-    st.rerun()
+                    with st.spinner("Connecting to Knowledge Base..."):
+                        res = call_chatbot_api(text, top_k)
+                        bot_text = (
+                            extract_response_text(res["data"])
+                            if res["success"]
+                            else f"Error: {res['error']}"
+                        )
+                        st.session_state.messages.append(
+                            {
+                                "role": "assistant",
+                                "content": bot_text,
+                                "time": datetime.now().strftime("%H:%M"),
+                            }
+                        )
+                    st.rerun()
 
-# Logic to handle API call after rerun if last message is from user
+    # Chat Message Feed
+    for msg in st.session_state.messages:
+        is_user = msg["role"] == "user"
+        st.markdown(
+            f"""
+        <div class="chat-bubble {'user-bubble' if is_user else 'assistant-bubble'}">
+            <div class="sender-meta">
+                <span>{'USER' if is_user else 'CII INTELLIGENCE'}</span>
+                <span>{msg['time']}</span>
+            </div>
+            <div style="color: white !important;">{msg['content']}</div>
+        </div>
+        """,
+            unsafe_allow_html=True,
+        )
+
+    # Chat Input
+    query = st.chat_input("Enter your industry research query...")
+    if query:
+        st.session_state.messages.append(
+            {"role": "user", "content": query, "time": datetime.now().strftime("%H:%M")}
+        )
+        st.rerun()
+
+# ============================
+# API Call Logic (After Rerun)
+# ============================
 if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
     last_query = st.session_state.messages[-1]["content"]
     with st.spinner("Analyzing Database..."):
