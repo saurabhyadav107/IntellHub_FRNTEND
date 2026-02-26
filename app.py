@@ -1,4 +1,5 @@
 import streamlit as st
+import markdown
 import requests
 import json
 import re
@@ -156,6 +157,26 @@ st.markdown(
         background-color: transparent !important;
     }
 
+    .msg-content ul {
+    padding-left: 1.4rem;
+    margin: 0.5rem 0;
+    }
+
+    .msg-content li {
+        margin-bottom: 0.4rem;
+        color: var(--text-main) !important;
+    }
+
+    .msg-content strong {
+        color: #10A37F !important;
+        font-weight: 700;
+    }
+
+    .msg-content p {
+        margin-bottom: 0.6rem;
+        line-height: 1.7;
+    }
+
     .chat-bubble {
         padding: 1.5rem;
         border-radius: 1.2rem;
@@ -305,6 +326,13 @@ def call_chatbot_api(query: str, top_k: int):
     except Exception as e:
         return {"success": False, "error": str(e)}
 
+def render_markdown_to_html(text: str) -> str:
+    """Convert Markdown to HTML for safe browser rendering."""
+    html = markdown.markdown(
+        text,
+        extensions=["nl2br", "sane_lists", "fenced_code", "codehilite", "tables", "footnotes"]
+    )
+    return html
 
 # ============================
 # Session State Initialization
@@ -406,16 +434,24 @@ if tabs == "Intelligence Chat":
     # Chat Message Feed
     for msg in st.session_state.messages:
         is_user = msg["role"] == "user"
+
+        # Render Markdown only for assistant messages
+        content = (
+            render_markdown_to_html(msg["content"])
+            if not is_user
+            else msg["content"]
+        )
+
         st.markdown(
             f"""
-        <div class="chat-bubble {'user-bubble' if is_user else 'assistant-bubble'}">
-            <div class="sender-meta">
-                <span>{'USER' if is_user else 'CII INTELLIGENCE'}</span>
-                <span>{msg['time']}</span>
+            <div class="chat-bubble {'user-bubble' if is_user else 'assistant-bubble'}">
+                <div class="sender-meta">
+                    <span>{'USER' if is_user else 'CII INTELLIGENCE'}</span>
+                    <span>{msg['time']}</span>
+                </div>
+                <div class="msg-content" style="color: white !important;">{content}</div>
             </div>
-            <div style="color: white !important;">{msg['content']}</div>
-        </div>
-        """,
+            """,
             unsafe_allow_html=True,
         )
 
